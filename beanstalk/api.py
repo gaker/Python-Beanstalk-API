@@ -74,7 +74,7 @@ class BeanstalkRequest(object):
         print u.content
         <?xml version="1.0" encoding="UTF-8"?>
         <user>
-          <account-id type="integer">73216</account-id>
+          <account-id type="integer">1234567</account-id>
           <admin type="boolean">false</admin>
           <created-at type="datetime">2011-09-15T22:01:37-05:00</created-at>
           <email>greg@example.com</email>
@@ -88,28 +88,20 @@ class BeanstalkRequest(object):
         </user>
         '''
         url = '{0}users.xml'.format(self.api_url)
+        elements = [
+            ('login', login),
+            ('email', email),
+            ('first_name', first_name),
+            ('last_name', last_name),
+            ('password', password)
+        ]
 
         root = ET.Element('user')
 
-        child = ET.Element('login')
-        child.text = login
-        root.append(child)
-
-        child = ET.Element('email')
-        child.text = email
-        root.append(child)
-
-        child = ET.Element('first_name')
-        child.text = first_name
-        root.append(child)
-
-        child = ET.Element('last_name')
-        child.text = last_name
-        root.append(child)
-
-        child = ET.Element('password')
-        child.text = password
-        root.append(child)
+        for el in elements:
+            child = ET.Element(el[0])
+            child.text = el[1]
+            root.append(child)
 
         xml = ET.tostring(root, encoding='utf-8')
 
